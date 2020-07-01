@@ -1,0 +1,335 @@
+"__     _____ __  __
+"\ \   / /_ _|  \/  |
+" \ \ / / | || |\/| |
+"  \ V /  | || |  | |
+"   \_/  |___|_|  |_|
+"
+
+" ===
+" === Auto load for first time uses
+" ===
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+" ====================
+" === Editor Setup ===
+" ====================
+
+" ===
+" === System
+" ===
+set nocompatible " set vi not compatible with vim
+filetype on
+filetype indent on
+filetype plugin on
+filetype plugin indent on
+set mouse=a
+set encoding=utf-8
+set clipboard=unnamed
+
+" Prevent incorrect background rendering
+let &t_ut=''
+
+" ===
+" === Main code display
+" ===
+set number " set nu
+set relativenumber
+set ruler
+set cursorline
+set cursorcolumn
+syntax enable
+syntax on
+
+" ===
+" === Editor behavior
+" ===
+set expandtab
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+set list " Show invisible characters
+set listchars=tab:▸\ ,trail:▫
+set scrolloff=5
+set autoindent
+set cindent
+set smartindent
+set wrap
+set tw=0
+set indentexpr=
+set backspace=indent,eol,start
+
+set foldmethod=indent
+set foldlevel=99
+
+" cursor shape
+let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+let &t_SR = "\<Esc>]50;CursorShape=2\x7"
+let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+
+" ===
+" === Window behavior
+" ===
+set splitright
+set splitbelow
+
+" ===
+" === Status/Command Bar
+" ===
+set laststatus=2
+set showcmd
+set autochdir
+set formatoptions-=tc
+
+" show command autocomplete
+set wildignore=log/**,node_modules/**,target/**,*.rbc
+set wildmenu
+set wildmode=longest,list,full
+
+" Search
+set hlsearch
+exec "nohlsearch"
+set incsearch
+set ignorecase
+set smartcase
+
+" ===
+" === Restore Cursor Position
+" ===
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
+" ===
+" === Basic Mapping
+" ===
+
+" set <LEADER> as <SPACE>
+let mapleader=" "
+
+" Save and Quit
+map s <nop>
+map S :w<CR>
+map Q :q<CR>
+map wq :wq<CR>
+
+" Update Vim-Config-Source-File
+map us :source $MYVIMRC<CR>
+
+" Split Window
+
+" above
+map sk :set nosplitbelow<CR>:split<CR>
+map <LEADER>k <C-w>k
+" below
+map sj :set splitbelow<CR>:split<CR>
+map <LEADER>j <C-w>j
+" right
+map sl :set splitright<CR>:vsplit<CR>
+map <LEADER>l <C-w>l
+" left
+map sh :set nosplitright<CR>:vsplit<CR>
+map <LEADER>h <C-w>h
+
+" Window Size
+map <LEADER><up> :res +5<CR>
+map <LEADER><down> :res -5<CR>
+map <LEADER><left> :vertical resize-5<CR>
+map <LEADER><right> :vertical resize+5<CR>
+
+map ssv <C-w>t<C-w>H
+map ssh <C-w>t<C-w>K
+
+" Search key
+map <LEADER><CR> :nohlsearch<CR>
+map = nzz
+map - Nzz
+
+" ===
+" === Tab manager
+" ===
+" create a new tab with tb
+map tb :tabe<CR>
+" switch forward or backward one tab with t=/t-
+map t= :+tabnext<CR>
+map t- :-tabnext<CR>
+" move current tab backward or forwadr with tm=/tm-
+map tm= :+tabmove<CR>
+map tm- :-tabmove<CR>
+
+" ===
+" === other
+" ===
+map <LEADER><LEADER> <Esc>/<++><CR>:nohlsearch<CR>c4l
+
+" create new file
+map cn :new<CR>
+" open dir and select file
+map cnn :new<CR>:e ./<CR>
+
+" ===
+" === Install Plugins with vim-plug
+" ===
+call plug#begin('~/.vim/plugged')
+
+" Vim Style and Theme
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'connorholyday/vim-snazzy'
+
+" NERDTree
+Plug 'scrooloose/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+
+" Taglist
+Plug 'majutsushi/tagbar', { 'on': 'TagbarOpenAutoClose' }
+
+" Error checking
+Plug 'w0rp/ale'
+
+" Auto Complete
+" Install Method
+" (1) curl -sL install-node.now.sh/lts | sudo -E bash -
+" (2) sudo apt-get install clangd-10
+" (3) sudo update-alternatives --install /usr/bin/clangd clangd /usr/bin/clangd-10 100
+" (4) :CocConfig
+" (5) :CocInstall coc-snippets coc-clangd coc-python
+" (6) pip3 install python-language-server
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+" markdown
+Plug 'plasticboy/vim-markdown'
+Plug 'iamcco/mathjax-support-for-mkdp'
+Plug 'iamcco/markdown-preview.vim'
+Plug 'dhruvasagar/vim-table-mode'
+
+" clang-format
+Plug 'rhysd/vim-clang-format'
+
+" header c < -- > header.h
+" use method -->  :A
+Plug 'vim-scripts/a.vim'
+
+" choose window
+" use method -->  1. - 2.number
+Plug 't9md/vim-choosewin'
+
+" search func
+Plug 'dyng/ctrlsf.vim'
+
+" show all func and search file under current project's files
+Plug 'Yggdroot/LeaderF'
+
+" function's notes
+Plug 'vim-scripts/DoxygenToolkit.vim'
+
+call plug#end()
+
+" ===
+" === Airline
+" ===
+let g:airline#extensions#tabline#enabled = 1
+" let g:airline_theme="luna"
+let g:airline_theme="bubblegum"
+
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+
+" powerline symbols
+let g:airline_left_sep = '▶'
+let g:airline_left_alt_sep = '❯'
+let g:airline_right_sep = '◀'
+let g:airline_right_alt_sep = '❮'
+let g:airline_symbols.linenr = '¶'
+let g:airline_symbols.branch = '⎇'
+
+" ===
+" === snazzy
+" ===
+let g:SnazzyTransparent = 1
+color snazzy
+let g:lightline = { 'colorscheme': 'snazzy' }
+
+" ===
+" === NERDTree Config
+" ===
+
+" use method
+" map tt open file directory tree
+map tt :NERDTreeToggle<CR>
+" R --> Refresh dir
+" s --> split and show selected dir
+" o --> open and close dir
+" u --> set current dir's parent as root dir
+" C --> set current dir as root dir
+" m --> menu
+
+" ==
+" == NERDTree-git
+" ==
+let g:NERDTreeIndicatorMapCustom = {
+    \ "Modified"  : "✹",
+    \ "Staged"    : "✚",
+    \ "Untracked" : "✭",
+    \ "Renamed"   : "➜",
+    \ "Unmerged"  : "═",
+    \ "Deleted"   : "✖",
+    \ "Dirty"     : "✗",
+    \ "Clean"     : "✔︎",
+    \ "Unknown"   : "?"
+    \ }
+
+" ===
+" === Taglist
+" ===
+map <silent> T :TagbarOpenAutoClose<CR>
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gt <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+" support c++11
+let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
+
+" ===
+" === markdown config
+" ===
+" default browser
+" let g:mkdp_path_to_chrome = "google-chrome-stable"
+let g:mkdp_path_to_chrome = "firefox"
+let g:mkdp_browserfunc = 'MKDP_browserfunc_default'
+let g:mkdp_auto_start = 0
+let g:mkdp_auto_open = 1
+let g:mkdp_auto_close = 1
+let g:mkdp_refresh_slow = 0
+let g:mkdp_command_for_global = 0
+let g:mkdp_open_to_the_world = 0
+map mp :MarkdownPreview<CR>
+map mps :MarkdownPreviewStop<CR>
+map <LEADER>tm :TableModeToggle<CR>
+
+" ===
+" === ClangFormat
+" ===
+map F :ClangFormat<CR>
+
+" ===
+" === .a <--> .h
+" ===
+map  <LEADER>a :A<CR>
+nmap <LEADER>- <Plug>(choosewin)
+" dox
+nmap <LEADER>d :Dox<CR>
+map <LEADER>sf :CtrlSF<CR>
+
+" ===
+" === LeaderF
+" ===
+map clf :LeaderfFunction<CR>
+
+map <LEADER>[ :bn<CR>
+map <LEADER>] :bN<CR>
+map  B :b$num
