@@ -113,6 +113,9 @@ map s <nop>
 map S :w<CR>
 map Q :q<CR>
 map wq :wq<CR>
+map <LEADER>w :w <filename>
+map <LEADER>r :r !
+map <LEADER>s :%s/old/new/g
 
 " Update Vim-Config-Source-File
 map us :source $MYVIMRC<CR>
@@ -297,6 +300,10 @@ map F :ClangFormat<CR>
 " === .a <--> .h
 " ===
 map  <LEADER>a :A<CR>
+
+" ===
+" ===  Switch Window
+" ===
 nmap <LEADER>- <Plug>(choosewin)
 " dox
 nmap <LEADER>d :Dox<CR>
